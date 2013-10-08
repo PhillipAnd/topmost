@@ -181,9 +181,9 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 				EnumWindows(EnumWindowsProc,LIST_WINDOWS);
 
 				for (i=0; i<numWindows; i++) {
-					if (strlen(windowNames[i]) == 0)
+					//if (strlen(windowNames[i]) == 0)
 						//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_ADDSTRING,0,(LPARAM)"[no title]");
-					else
+					//else
 						//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_ADDSTRING,0,(LPARAM)windowNames[i]);
 				}
 
@@ -231,6 +231,7 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 
 		case IDC_BRINGTOTOP:
 			//i = SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_GETCURSEL,0,0);
+			i = 0;
 			SwitchToThisWindow(visibleWindows[i],FALSE);
 			break;
 
