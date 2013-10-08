@@ -115,7 +115,7 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 			SendMessage(hwnd, WM_SETICON, ICON_SMALL, (LPARAM)hIconSm);
 
 			SendMessage(hwnd,WM_COMMAND,IDC_REFRESH,0);
-			SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_SETCURSEL,0,0);
+			//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_SETCURSEL,0,0);
 
 			CheckDlgButton(hwnd,IDC_LIVEUPDATE,BST_CHECKED);
 			EnableWindow(GetDlgItem(hwnd,IDC_REFRESH),FALSE);
@@ -137,7 +137,7 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 			EndDialog(hwnd,0);
 			break;
 
-		case IDC_WINDOWLIST:
+		/*case IDC_WINDOWLIST:
 			if (HIWORD(wParam) == LBN_SELCHANGE) {
 				int index = SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_GETCURSEL,0,0);
 				if (topmostStatus[index]) {
@@ -147,7 +147,7 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 				}
 			}
 			break;
-
+*/
 		case IDC_REFRESH:
 			{
 				DWORD       dwExtent;
@@ -170,26 +170,26 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 				numWindows = 0;
 				list_initialized = FALSE;
 
-				curIndex = SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_GETCURSEL,0,0);
+				//curIndex = SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_GETCURSEL,0,0);
 
 				//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_SETHORIZONTALEXTENT,0,0);
 				//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,WM_HSCROLL,SB_TOP,0);
-				SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_DELETESTRING,0,0);
-				SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_RESETCONTENT,0,0);
+				//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_DELETESTRING,0,0);
+				//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_RESETCONTENT,0,0);
 
 				EnumWindows(EnumWindowsProc,COUNT_WINDOWS);
 				EnumWindows(EnumWindowsProc,LIST_WINDOWS);
 
 				for (i=0; i<numWindows; i++) {
 					if (strlen(windowNames[i]) == 0)
-						SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_ADDSTRING,0,(LPARAM)"[no title]");
+						//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_ADDSTRING,0,(LPARAM)"[no title]");
 					else
-						SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_ADDSTRING,0,(LPARAM)windowNames[i]);
+						//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_ADDSTRING,0,(LPARAM)windowNames[i]);
 				}
 
 				/* Scrollbar stuff */
 
-				for (i=0; i<numWindows; i++) {
+				/*for (i=0; i<numWindows; i++) {
 					if (strlen(windowNames[longestIndex]) <  strlen(windowNames[i]))
 						longestIndex = i;
 				}
@@ -203,12 +203,12 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 					+ tm.tmAveCharWidth;
 				SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_SETHORIZONTALEXTENT,LOWORD(dwExtent),0);
 				SelectObject(hDCListBox, hFontOld);
-				ReleaseDC(hWndListBox, hDCListBox);
+				ReleaseDC(hWndListBox, hDCListBox);*/
 
 				if (curIndex >= numWindows) {
 					curIndex = numWindows - 1;
 				}
-				SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_SETCURSEL,curIndex,0);
+				//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_SETCURSEL,curIndex,0);
 				if (topmostStatus[curIndex]) {
 					CheckDlgButton(hwnd,IDC_FLAGBOX,BST_CHECKED);
 				} else {
@@ -220,7 +220,8 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 			}
 
 		case IDC_FLAGBOX:
-			i = SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_GETCURSEL,0,0);
+			//i = SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_GETCURSEL,0,0);
+			i = 0;
 			if (IsDlgButtonChecked(hwnd,IDC_FLAGBOX)) {
 				SetWindowPos(visibleWindows[i],HWND_TOPMOST,0,0,0,0,SWP_NOMOVE | SWP_NOSIZE);
 			} else {
@@ -229,7 +230,7 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 			break;
 
 		case IDC_BRINGTOTOP:
-			i = SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_GETCURSEL,0,0);
+			//i = SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_GETCURSEL,0,0);
 			SwitchToThisWindow(visibleWindows[i],FALSE);
 			break;
 
