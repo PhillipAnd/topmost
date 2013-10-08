@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <CommCtrl.h>
 #include <stdio.h>
 #include <string.h>
 #include <malloc.h>
@@ -155,8 +156,10 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 				HWND		hWndListBox;
 				HFONT       hFontOld, hFontNew;
 				TEXTMETRIC tm;
+				LVITEM curItem;
 				int longestIndex = 0;
 				int curIndex = 0;
+				int itemCount = -1;
 				//EnableWindow(hwnd,FALSE);
 
 				/* Free memory */
@@ -176,16 +179,26 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 				//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,WM_HSCROLL,SB_TOP,0);
 				//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_DELETESTRING,0,0);
 				//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_RESETCONTENT,0,0);
+				SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LVM_DELETEALLITEMS,0,0);
 
 				EnumWindows(EnumWindowsProc,COUNT_WINDOWS);
 				EnumWindows(EnumWindowsProc,LIST_WINDOWS);
 
 				for (i=0; i<numWindows; i++) {
-					//if (strlen(windowNames[i]) == 0)
+					curItem.mask = LVIF_TEXT | LVIF_STATE;
+					curItem.stateMask = 0;
+					curItem.iSubItem = 0;
+					curItem.iItem = i;
+					curItem.state = 0;
+					if (strlen(windowNames[i]) == 0)
+						curItem.pszText = "[no title]";
 						//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_ADDSTRING,0,(LPARAM)"[no title]");
-					//else
+					else
+						curItem.pszText = windowNames[i];
 						//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_ADDSTRING,0,(LPARAM)windowNames[i]);
+					itemCount = SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LVM_INSERTITEM,0,(LPARAM)&curItem);
 				}
+				itemCount = SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LVM_GETITEMCOUNT,0,0);
 
 				/* Scrollbar stuff */
 
