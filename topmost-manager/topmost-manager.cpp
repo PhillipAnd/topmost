@@ -63,7 +63,7 @@ BOOL CALLBACK EnumWindowsProc(
 				i = 0;
 				list_initialized = TRUE;
 				ImageList_Destroy(icons);
-				icons = ImageList_Create(GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON), ILC_MASK, numWindows, 1);
+				icons = ImageList_Create(GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON), ILC_MASK | ILC_COLOR32, numWindows, 1);
 			}
 			if (i >= numWindows )
 				return FALSE;
@@ -72,7 +72,7 @@ BOOL CALLBACK EnumWindowsProc(
 				if (curIcon) {
 					ImageList_AddIcon(icons,curIcon);
 				} else {
-					curIcon = LoadIcon(GetModuleHandle(NULL),MAKEINTRESOURCE(IDI_ICON1));
+					curIcon = LoadIcon(GetModuleHandle(NULL),MAKEINTRESOURCE(IDI_QUESTION));
 					ImageList_AddIcon(icons,curIcon);
 				}
 				visibleWindows[i] = hwnd;
