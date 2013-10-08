@@ -69,6 +69,9 @@ BOOL CALLBACK EnumWindowsProc(
 				return FALSE;
 			else if (isRealWindow(hwnd)) {
 				HICON curIcon = (HICON)SendMessage(hwnd,WM_GETICON,ICON_BIG,0);
+				if (!curIcon) {
+					curIcon = (HICON)GetClassLong(hwnd,GCL_HICON);
+				}
 				if (curIcon) {
 					ImageList_AddIcon(icons,curIcon);
 				} else {
