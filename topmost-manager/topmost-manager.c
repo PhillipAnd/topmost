@@ -12,6 +12,7 @@
 
 int numWindows = 0;
 HWND *visibleWindows;
+HIMAGELIST icons = NULL;
 char **windowNames;
 BOOL *topmostStatus;
 BOOL list_initialized = FALSE;
@@ -61,10 +62,19 @@ BOOL CALLBACK EnumWindowsProc(
 				topmostStatus = (BOOL *)malloc(numWindows * sizeof(BOOL));
 				i = 0;
 				list_initialized = TRUE;
+				ImageList_Destroy(icons);
+				icons = ImageList_Create(GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON), ILC_MASK, numWindows, 1);
 			}
 			if (i >= numWindows )
 				return FALSE;
 			else if (isRealWindow(hwnd)) {
+				HICON curIcon = (HICON)SendMessage(hwnd,WM_GETICON,ICON_BIG,0);
+				if (curIcon) {
+					ImageList_AddIcon(icons,curIcon);
+				} else {
+					curIcon = LoadIcon(GetModuleHandle(NULL),MAKEINTRESOURCE(IDI_ICON1));
+					ImageList_AddIcon(icons,curIcon);
+				}
 				visibleWindows[i] = hwnd;
 				windowNames[i] = (char *)malloc((GetWindowTextLength(hwnd) + 2) * sizeof(char));
 				GetWindowText(hwnd,windowNames[i],GetWindowTextLength(hwnd)+1);
@@ -202,10 +212,11 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 				SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LVM_DELETEALLITEMS,0,0);
 
 				for (i=0; i<numWindows; i++) {
-					curItem.mask = LVIF_TEXT | LVIF_STATE;
+					curItem.mask = LVIF_TEXT | LVIF_STATE | LVIF_IMAGE;
 					curItem.stateMask = 0;
 					curItem.iSubItem = 0;
 					curItem.iItem = i;
+					curItem.iImage = i;
 					curItem.state = 0;
 					if (strlen(windowNames[i]) == 0)
 						curItem.pszText = "[no title]";
@@ -217,23 +228,6 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 				}
 				itemCount = SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LVM_GETITEMCOUNT,0,0);
 
-				/* Scrollbar stuff */
-
-				/*for (i=0; i<numWindows; i++) {
-					if (strlen(windowNames[longestIndex]) <  strlen(windowNames[i]))
-						longestIndex = i;
-				}
-
-				hWndListBox = GetDlgItem(hwnd,IDC_WINDOWLIST);
-				hDCListBox = GetDC(hWndListBox);
-				hFontNew = (HFONT)SendMessage(hWndListBox, WM_GETFONT, 0, 0);
-				hFontOld = (HFONT)SelectObject(hDCListBox, hFontNew);
-				GetTextMetrics(hDCListBox, (LPTEXTMETRIC)&tm);
-				dwExtent = GetTabbedTextExtent(hDCListBox, windowNames[longestIndex], strlen(windowNames[longestIndex]),0,NULL)
-					+ tm.tmAveCharWidth;
-				SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_SETHORIZONTALEXTENT,LOWORD(dwExtent),0);
-				SelectObject(hDCListBox, hFontOld);
-				ReleaseDC(hWndListBox, hDCListBox);*/
 
 				if (curIndex >= numWindows) {
 					curIndex = numWindows - 1;
@@ -256,8 +250,8 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 			}
 
 		case IDC_FLAGBOX:
-			//i = SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_GETCURSEL,0,0);
-			i = 0;
+			i = SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LVM_GETNEXTITEM,-1,LVNI_SELECTED);
+			if (i < 0) break;
 			if (IsDlgButtonChecked(hwnd,IDC_FLAGBOX)) {
 				SetWindowPos(visibleWindows[i],HWND_TOPMOST,0,0,0,0,SWP_NOMOVE | SWP_NOSIZE);
 			} else {
@@ -266,8 +260,8 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 			break;
 
 		case IDC_BRINGTOTOP:
-			//i = SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_GETCURSEL,0,0);
-			i = 0;
+			i = SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LVM_GETNEXTITEM,-1,LVNI_SELECTED);
+			if (i < 0) break;
 			SwitchToThisWindow(visibleWindows[i],FALSE);
 			break;
 
@@ -304,7 +298,7 @@ int WINAPI WinMain(
 	int nShowCmd 
 	) {
 
-
+		icons = ImageList_Create(20,20,0,1,1);
 		DialogBox(hInstance,MAKEINTRESOURCE(IDD_MAIN),NULL,MainDialogProc);
 
 		return 0;
