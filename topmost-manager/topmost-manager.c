@@ -221,6 +221,9 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 				if (curIndex >= numWindows) {
 					curIndex = numWindows - 1;
 				}
+				curItem.stateMask = LVIS_SELECTED;
+				curItem.state = LVIS_SELECTED;
+				SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LVM_SETITEMSTATE,curIndex,(LPARAM)&curItem);
 				//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_SETCURSEL,curIndex,0);
 				if (topmostStatus[curIndex]) {
 					CheckDlgButton(hwnd,IDC_FLAGBOX,BST_CHECKED);
