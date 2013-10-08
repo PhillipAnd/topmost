@@ -150,6 +150,9 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 		case IDC_WINDOWLIST:
 			if (((LPNMHDR)lParam)->code == LVN_ITEMCHANGED) {
 				{
+				if (IsDlgButtonChecked(hwnd,IDC_LIVEUPDATE) ) {
+					SetTimer(hwnd,ID_TIMER,1000,NULL);
+				}
 				int index = SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LVM_GETNEXTITEM,-1,LVNI_SELECTED);
 				if (index >= 0) {
 					EnableWindow(GetDlgItem(hwnd, IDC_FLAGBOX),TRUE);
@@ -201,17 +204,19 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 				numWindows = 0;
 				list_initialized = FALSE;
 
-				curIndex = SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LVM_GETNEXTITEM,-1,LVNI_SELECTED);
+				
 
 				//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_SETHORIZONTALEXTENT,0,0);
 				//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,WM_HSCROLL,SB_TOP,0);
 				//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_DELETESTRING,0,0);
 				//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_RESETCONTENT,0,0);
 
+				SendDlgItemMessage(hwnd,IDC_WINDOWLIST,WM_SETREDRAW,FALSE,0);
+
 				EnumWindows(EnumWindowsProc,COUNT_WINDOWS);
 				EnumWindows(EnumWindowsProc,LIST_WINDOWS);
 
-				SendDlgItemMessage(hwnd,IDC_WINDOWLIST,WM_SETREDRAW,FALSE,0);
+				curIndex = SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LVM_GETNEXTITEM,-1,LVNI_SELECTED);
 				SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LVM_DELETEALLITEMS,0,0);
 				SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LVM_SETIMAGELIST,LVSIL_NORMAL,(LPARAM)icons);
 
