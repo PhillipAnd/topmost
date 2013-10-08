@@ -75,7 +75,7 @@ BOOL CALLBACK EnumWindowsProc(
 				if (curIcon) {
 					ImageList_AddIcon(icons,curIcon);
 				} else {
-					curIcon = LoadIcon(GetModuleHandle(NULL),MAKEINTRESOURCE(IDI_QUESTION));
+					curIcon = LoadIcon(GetModuleHandle(NULL),MAKEINTRESOURCE(IDI_YELLOWQUESTION));
 					ImageList_AddIcon(icons,curIcon);
 				}
 				visibleWindows[i] = hwnd;

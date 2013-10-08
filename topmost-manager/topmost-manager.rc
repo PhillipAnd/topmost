@@ -58,4 +58,4 @@ IDI_ICON2          ICON           ".\\about_logo.ico"
 
 
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
-IDI_QUESTION       ICON           ".\\questionmark_resized.ico"
+IDI_YELLOWQUESTION ICON           ".\\questionmark_resized.ico"

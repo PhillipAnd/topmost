@@ -6,6 +6,7 @@
 #define IDI_ICON1                               102
 #define IDD_ABOUT                               104
 #define IDI_ICON2                               108
+#define IDI_YELLOWQUESTION                      109
 #define IDC_LIVEUPDATE                          1001
 #define IDC_FLAGBOX                             1008
 #define IDC_BRINGTOTOP                          1009
