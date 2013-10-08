@@ -245,14 +245,15 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 					curItem.stateMask = LVIS_SELECTED;
 					curItem.state = LVIS_SELECTED;
 					SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LVM_SETITEMSTATE,curIndex,(LPARAM)&curItem);
+					if (topmostStatus[curIndex]) {
+					 CheckDlgButton(hwnd,IDC_FLAGBOX,BST_CHECKED);
+				    } else {
+					 CheckDlgButton(hwnd,IDC_FLAGBOX,BST_UNCHECKED);
+				    }
 				}
 				SendDlgItemMessage(hwnd,IDC_WINDOWLIST,WM_SETREDRAW,TRUE,0);
 				//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_SETCURSEL,curIndex,0);
-				if (topmostStatus[curIndex]) {
-					CheckDlgButton(hwnd,IDC_FLAGBOX,BST_CHECKED);
-				} else {
-					CheckDlgButton(hwnd,IDC_FLAGBOX,BST_UNCHECKED);
-				}
+				
 
 				//EnableWindow(hwnd,TRUE);
 				break;
