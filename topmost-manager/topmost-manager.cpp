@@ -210,6 +210,7 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 
 				SendDlgItemMessage(hwnd,IDC_WINDOWLIST,WM_SETREDRAW,FALSE,0);
 				SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LVM_DELETEALLITEMS,0,0);
+				SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LVM_SETIMAGELIST,LVSIL_NORMAL,(LPARAM)icons);
 
 				for (i=0; i<numWindows; i++) {
 					curItem.mask = LVIF_TEXT | LVIF_STATE | LVIF_IMAGE;
@@ -294,7 +295,7 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 int WINAPI WinMain(
 	HINSTANCE hInstance, 
 	HINSTANCE hPrevInstance, 
-	LPWSTR lpCmdLine, 
+	LPSTR lpCmdLine, 
 	int nShowCmd 
 	) {
 
