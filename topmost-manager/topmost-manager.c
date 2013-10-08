@@ -181,6 +181,7 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 				//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,WM_HSCROLL,SB_TOP,0);
 				//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_DELETESTRING,0,0);
 				//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_RESETCONTENT,0,0);
+				SendDlgItemMessage(hwnd,IDC_WINDOWLIST,WM_SETREDRAW,FALSE,0);
 				SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LVM_DELETEALLITEMS,0,0);
 
 				EnumWindows(EnumWindowsProc,COUNT_WINDOWS);
@@ -226,6 +227,7 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 				curItem.stateMask = LVIS_SELECTED;
 				curItem.state = LVIS_SELECTED;
 				SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LVM_SETITEMSTATE,curIndex,(LPARAM)&curItem);
+				SendDlgItemMessage(hwnd,IDC_WINDOWLIST,WM_SETREDRAW,TRUE,0);
 				//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_SETCURSEL,curIndex,0);
 				if (topmostStatus[curIndex]) {
 					CheckDlgButton(hwnd,IDC_FLAGBOX,BST_CHECKED);
