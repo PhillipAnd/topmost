@@ -55,3 +55,7 @@ IDI_ICON1          ICON           ".\\icon.ico"
 
 LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
 IDI_ICON2          ICON           ".\\about_logo.ico"
+
+
+LANGUAGE LANG_NEUTRAL, SUBLANG_NEUTRAL
+IDI_QUESTION       ICON           ".\\questionmark_resized.ico"
