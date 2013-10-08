@@ -173,7 +173,9 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 				numWindows = 0;
 				list_initialized = FALSE;
 
-				//curIndex = SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_GETCURSEL,0,0);
+				curIndex = SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LVM_GETNEXTITEM,-1,LVNI_SELECTED);
+				if (curIndex == -1)
+					curIndex = 0;
 
 				//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_SETHORIZONTALEXTENT,0,0);
 				//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,WM_HSCROLL,SB_TOP,0);
