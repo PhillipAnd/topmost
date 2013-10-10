@@ -226,6 +226,7 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 						//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_ADDSTRING,0,(LPARAM)"[no title]");
 					else
 						curItem.pszText = windowNames[i];
+						SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LVM_INSERTITEM,0,(LPARAM)&curItem);
 						//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_ADDSTRING,0,(LPARAM)windowNames[i]);
 				}
 
