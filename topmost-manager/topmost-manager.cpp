@@ -182,15 +182,9 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 
 		case IDC_REFRESH:
 			{
-				DWORD       dwExtent;
-				HDC         hDCListBox;
-				HWND		hWndListBox;
-				HFONT       hFontOld, hFontNew;
-				TEXTMETRIC tm;
 				LVITEM curItem;
 				int longestIndex = 0;
 				int curIndex = 0;
-				int itemCount = -1;
 				//EnableWindow(hwnd,FALSE);
 
 				/* Free memory */
@@ -233,9 +227,7 @@ BOOL CALLBACK MainDialogProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lPar
 					else
 						curItem.pszText = windowNames[i];
 						//SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LB_ADDSTRING,0,(LPARAM)windowNames[i]);
-					itemCount = SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LVM_INSERTITEM,0,(LPARAM)&curItem);
 				}
-				itemCount = SendDlgItemMessage(hwnd,IDC_WINDOWLIST,LVM_GETITEMCOUNT,0,0);
 
 
 				if (curIndex >= numWindows) {
